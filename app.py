@@ -8,7 +8,7 @@ import os
 st.set_page_config(
     page_title="グリーンキーパー作業登録",
     page_icon="🌱",
-    layout="wide",
+    layout="centered",  # wideからcenteredに変更してモバイル最適化
     initial_sidebar_state="collapsed"
 )
 
@@ -16,43 +16,172 @@ st.set_page_config(
 st.markdown("""
 <style>
     .main {
-        padding: 1rem;
+        padding: 0.1rem;
+        max-width: 100%;
     }
+    
+    /* モバイル最適化 */
+    @media (max-width: 768px) {
+        .main {
+            padding: 0.05rem;
+        }
+        
+        .stButton > button {
+            width: 100%;
+            height: 2.2rem;
+            font-size: 1rem;
+            border-radius: 6px;
+            margin: 0.15rem 0;
+        }
+        
+        .stTextInput > div > div > input,
+        .stSelectbox > div > div > select,
+        .stNumberInput > div > div > input {
+            font-size: 1rem;
+            padding: 0.4rem;
+            border-radius: 6px;
+            height: 2.2rem;
+        }
+        
+        .stTextArea > div > div > textarea {
+            font-size: 0.9rem;
+            border-radius: 6px;
+            padding: 0.3rem;
+        }
+        
+        .stDateInput > div > div > input,
+        .stTimeInput > div > div > input {
+            font-size: 1rem;
+            padding: 0.3rem;
+            border-radius: 6px;
+            height: 2.2rem;
+        }
+    }
+    
+    /* デスクトップ用 */
     .stButton > button {
         width: 100%;
-        height: 3rem;
-        font-size: 1.1rem;
-        border-radius: 10px;
-        margin: 0.5rem 0;
+        height: 2rem;
+        font-size: 0.9rem;
+        border-radius: 6px;
+        margin: 0.15rem 0;
     }
-    .stTextInput > div > div > input {
-        font-size: 1.1rem;
-        padding: 0.8rem;
-        border-radius: 8px;
+    
+    .stTextInput > div > div > input,
+    .stSelectbox > div > div > select,
+    .stNumberInput > div > div > input {
+        font-size: 0.9rem;
+        padding: 0.3rem;
+        border-radius: 4px;
+        height: 2rem;
     }
-    .stSelectbox > div > div > select {
-        font-size: 1.1rem;
-        padding: 0.8rem;
-        border-radius: 8px;
-    }
+    
     .stTextArea > div > div > textarea {
-        font-size: 1rem;
-        border-radius: 8px;
+        font-size: 0.8rem;
+        border-radius: 4px;
+        padding: 0.25rem;
     }
+    
+    .stDateInput > div > div > input,
+    .stTimeInput > div > div > input {
+        font-size: 0.9rem;
+        padding: 0.3rem;
+        border-radius: 4px;
+        height: 2rem;
+    }
+    
     .metric-card {
         background-color: #f0f2f6;
-        padding: 1rem;
-        border-radius: 10px;
-        margin: 0.5rem 0;
+        padding: 0.25rem;
+        border-radius: 6px;
+        margin: 0.15rem 0;
         text-align: center;
     }
+    
     .header-section {
         background: linear-gradient(90deg, #1f77b4, #ff7f0e);
         color: white;
-        padding: 1rem;
-        border-radius: 10px;
-        margin-bottom: 1rem;
+        padding: 0.25rem;
+        border-radius: 6px;
+        margin-bottom: 0.25rem;
         text-align: center;
+    }
+    
+    .header-section h1 {
+        margin: 0.15rem 0;
+        font-size: 1.3rem;
+    }
+    
+    .header-section p {
+        margin: 0.15rem 0;
+        font-size: 0.8rem;
+    }
+    
+    /* タブのスタイル改善 */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 0.15rem;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        height: 2rem;
+        border-radius: 4px;
+    }
+    
+    /* フォームの間隔調整 */
+    .stForm > div {
+        margin-bottom: 0.25rem;
+    }
+    
+    /* 作業タイトルのスタイル */
+    .work-title {
+        background: linear-gradient(90deg, #e8f4fd, #f0f8ff);
+        padding: 0.25rem;
+        border-radius: 4px;
+        margin: 0.25rem 0 0.15rem 0;
+        border-left: 2px solid #1f77b4;
+    }
+    
+    /* 見出しのマージン調整 */
+    h3 {
+        margin: 0.25rem 0 0.15rem 0;
+        font-size: 1rem;
+    }
+    
+    /* 列の間隔調整 */
+    .row-widget.stHorizontal {
+        gap: 0.25rem;
+    }
+    
+    /* 入力フィールド間の間隔調整 */
+    .stTextInput, .stSelectbox, .stNumberInput, .stDateInput, .stTimeInput {
+        margin-bottom: 0.15rem;
+    }
+    
+    /* さらに縦方向を詰める */
+    .stForm {
+        padding: 0.25rem;
+    }
+    
+    /* セクション間の間隔を最小限に */
+    .stMarkdown {
+        margin-bottom: 0.15rem;
+    }
+    
+    /* 成功メッセージの間隔調整 */
+    .stSuccess {
+        margin: 0.15rem 0;
+        padding: 0.25rem;
+    }
+    
+    /* チェックボックスの間隔調整 */
+    .stCheckbox {
+        margin: 0.15rem 0;
+    }
+    
+    /* 情報ボックスの間隔調整 */
+    .stInfo {
+        margin: 0.15rem 0;
+        padding: 0.25rem;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -76,13 +205,13 @@ def main():
     # ヘッダー
     st.markdown("""
     <div class="header-section">
-        <h1>GreenKeeper作業登録</h1>
-        <p>刈込・散水などの作業を記録します</p>
+        <h1>G&P Turf-Tools</h1>
+        <p>ゴルフコース/スタジアム管理作業記録</p>
     </div>
     """, unsafe_allow_html=True)
     
     # タブを作成
-    tab1, tab2, tab3 = st.tabs(["基本", "更新", "⚙️ 設定"])
+    tab1, tab2, tab3 = st.tabs(["🌿 基本", "🚜 更新", "⚙️ 設定"])
     
     with tab1:
         # st.markdown("### 基本作業データ入力")
@@ -93,11 +222,11 @@ def main():
             
             with col1:
                 # エリアタイプ
-                areaType_options = ["グリーン","フェアウェイ","ティー"]
+                areaType_options = ["グリーン","フェアウェイ","ティー","ラフ"]
                 areaType_name = st.selectbox("エリアタイプ", areaType_options)
                 
                 # エリア名
-                area_options = ["全グリーン", "1Hグリーン", "2Hグリーン"]
+                area_options = ["全グリーン", "1Hグリーン", "2Hグリーン","3Hグリーン","4Hグリーン","5Hグリーン","6Hグリーン","7Hグリーン","8Hグリーン","9Hグリーン","10Hグリーン","12Hグリーン","13Hグリーン","14Hグリーン","15Hグリーン","16Hグリーン"]
                 area_name = st.selectbox("エリア", area_options)
             
 
@@ -150,11 +279,11 @@ def main():
                     submitted2 = st.form_submit_button("💾 散水保存", use_container_width=True)
                 
                 # 散水
-                wateringType_options = ["スプリンクラー","スポット","手散水"]
+                wateringType_options = ["スプリンクラー","スポット","手散水","シリンジング"]
                 wateringType_name = st.selectbox("散水タイプ", wateringType_options)
 
                 # 散水時間
-                watering_duration = st.number_input("散水時間 (分)",
+                watering_duration = st.number_input("散水量 (ml/m2)",
                     min_value=8.0,
                     max_value=25.0,
                     value=12.0,
@@ -170,15 +299,15 @@ def main():
                     submitted3 = st.form_submit_button("💾 病害保存", use_container_width=True)
                 
                 # 雑草
-                weed_options = ["なし", "スズメノカタビラ", "メヒシバ", "クローバー"]
+                weed_options = ["なし", "スズメノカタビラ", "メヒシバ", "クローバー","チガヤ","藻類","コケ","オオバコ","ススズメノヒエ","オヒシバ","ウラジロスズコグサ","ハマスゲ","ヒメクグ","ハヤズソウ","その他"]
                 weed_status = st.selectbox("雑草", weed_options)
                 
                 # 病害
-                disease_options = ["なし", "ダラースポット", "ピシウム病（寒涼期）", "立枯病（ゾイシアデクライン）"]
+                disease_options = ["なし", "ダラースポット", "ピシウム病（寒涼期）", "立枯病（ゾイシアデクライン）","コケ","サマーパッチ","炭疽病","ドライスポット","デッドスポット","フェアリーリング","疑似葉腐病","ヘルミントスポリウム","かさ枯病"]
                 disease_status = st.selectbox("病害", disease_options)
                 
                 # 害虫・害獣
-                pest_options = ["なし", "シバツトガ", "ケラ", "コガネムシ"]
+                pest_options = ["なし", "シバツトガ", "ケラ", "コガネムシ","シバオサゾウムシ","スジキリヨトウ","タマナヤガ","アワヨトウ","チガヤシロオカイガラムシ","サル","シカ","イノシシ"]
                 pest_status = st.selectbox("害虫・害獣", pest_options)
                 
                 # その他タイトルとボタン
@@ -229,11 +358,11 @@ def main():
             
             with col1:
                 # エリアタイプ
-                areaType_options = ["グリーン","フェアウェイ","ティー"]
+                areaType_options = ["グリーン","フェアウェイ","ティー","ラフ"]
                 areaType_name = st.selectbox("エリアタイプ", areaType_options)
                 
                 # エリア名
-                area_options = ["全グリーン", "1Hグリーン", "2Hグリーン"]
+                area_options = ["全グリーン", "1Hグリーン", "2Hグリーン","3Hグリーン","4Hグリーン","5Hグリーン","6Hグリーン","7Hグリーン","8Hグリーン","9Hグリーン","10Hグリーン","12Hグリーン","13Hグリーン","14Hグリーン","15Hグリーン","16Hグリーン"]
                 area_name = st.selectbox("エリア", area_options)
             
             with col2:
@@ -249,6 +378,9 @@ def main():
             
             # コアリング
             st.markdown("### コアリング")
+            # コアリング保存ボタンをタイトルの下に移動
+            submitted_coring = st.form_submit_button("💾 コアリング保存", use_container_width=True)
+            
             col_coring1, col_coring2 = st.columns(2)
             
             with col_coring1:
@@ -269,61 +401,61 @@ def main():
                     format="%.1f"
                 )
             
-            submitted_coring = st.form_submit_button("💾 コアリング保存", use_container_width=True)
+            # バーチカルカット
+            st.markdown("### バーチカルカット")
+            # バーチカル保存ボタンをタイトルの下に移動
+            submitted_vertical = st.form_submit_button("💾 バーチカル保存", use_container_width=True)
             
-            col_update1, col_update2 = st.columns(2)
+            vertical_depth = st.number_input("バーチカル深さ (cm)",
+                min_value=1.0,
+                max_value=5.0,
+                value=2.0,
+                step=0.1,
+                format="%.1f"
+            )
             
-            with col_update1:
-                # バーチカルカット
-                st.markdown("### バーチカルカット")
-                vertical_depth = st.number_input("バーチカル深さ (cm)",
-                    min_value=1.0,
-                    max_value=5.0,
-                    value=2.0,
-                    step=0.1,
-                    format="%.1f"
-                )
-                submitted_vertical = st.form_submit_button("💾 バーチカル保存", use_container_width=True)
+            # 目砂
+            st.markdown("### 目砂")
+            # 目砂保存ボタンをタイトルの下に移動
+            submitted_sand = st.form_submit_button("💾 目砂保存", use_container_width=True)
             
-            with col_update2:
-                # 目砂
-                st.markdown("### 目砂")
-                sand_amount = st.number_input("目砂量 (kg)",
-                    min_value=10.0,
-                    max_value=100.0,
-                    value=30.0,
-                    step=1.0,
-                    format="%.0f"
-                )
-                submitted_sand = st.form_submit_button("💾 目砂保存", use_container_width=True)
+            sand_amount = st.number_input("目砂量 (kg)",
+                min_value=10.0,
+                max_value=100.0,
+                value=30.0,
+                step=1.0,
+                format="%.0f"
+            )
+            
+            # その他更新作業
+            st.markdown("### その他更新作業")
+            # その他更新保存ボタンをタイトルの下に移動
+            submitted_other_update = st.form_submit_button("💾 その他更新保存", use_container_width=True)
+            
+            other_update_notes = st.text_input("その他更新作業", placeholder="その他の更新作業名を入力してください...")
+            
+            if submitted_vertical or submitted_sand or submitted_coring or submitted_other_update:
+                # 更新データを保存
+                update_data = {
+                    "date": input_date.strftime("%Y-%m-%d"),
+                    "time": input_time.strftime("%H:%M"),
+                    "areaType": areaType_name,
+                    "area_name": area_name,
+                    "vertical_depth": vertical_depth if submitted_vertical else None,
+                    "sand_amount": sand_amount if submitted_sand else None,
+                    "coring_depth": coring_depth if submitted_coring else None,
+                    "coring_spacing": coring_spacing if submitted_coring else None,
+                    "other_update_notes": other_update_notes if submitted_other_update else "",
+                    "timestamp": datetime.now().isoformat()
+                }
                 
-                # その他更新作業
-                st.markdown("### その他更新作業")
-                other_update_notes = st.text_input("その他更新作業", placeholder="その他の更新作業名を入力してください...")
-                submitted_other_update = st.form_submit_button("💾 その他更新保存", use_container_width=True)
+                # 既存データを読み込み
+                existing_data = load_data()
+                existing_data.append(update_data)
+                save_data(existing_data)
                 
-                if submitted_vertical or submitted_sand or submitted_coring or submitted_other_update:
-                    # 更新データを保存
-                    update_data = {
-                        "date": input_date.strftime("%Y-%m-%d"),
-                        "time": input_time.strftime("%H:%M"),
-                        "areaType": areaType_name,
-                        "area_name": area_name,
-                        "vertical_depth": vertical_depth if submitted_vertical else None,
-                        "sand_amount": sand_amount if submitted_sand else None,
-                        "coring_depth": coring_depth if submitted_coring else None,
-                        "coring_spacing": coring_spacing if submitted_coring else None,
-                        "other_update_notes": other_update_notes if submitted_other_update else "",
-                        "timestamp": datetime.now().isoformat()
-                    }
-                    
-                    # 既存データを読み込み
-                    existing_data = load_data()
-                    existing_data.append(update_data)
-                    save_data(existing_data)
-                    
-                    st.success("✅ 更新作業データが正常に保存されました！")
-                    st.balloons()
+                st.success("✅ 更新作業データが正常に保存されました！")
+                st.balloons()
     
     with tab3:
         st.markdown("### 設定")

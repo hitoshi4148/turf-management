@@ -1,0 +1,32 @@
+[
+  {
+    "date": "2025-08-26",
+    "time": "11:11",
+    "areaType": "グリーン",
+    "area_name": "全グリーン",
+    "green_height": 3.0,
+    "rough_height": 25.0,
+    "wateringType": "スプリンクラー",
+    "watering_duration": 12.0,
+    "weed_status": "なし",
+    "disease_status": "なし",
+    "pest_status": "なし",
+    "other_notes": "",
+    "timestamp": "2025-08-26T11:11:33.089650"
+  },
+  {
+    "date": "2025-08-26",
+    "time": "11:11",
+    "areaType": "グリーン",
+    "area_name": "全グリーン",
+    "green_height": 3.0,
+    "rough_height": 25.0,
+    "wateringType": "スプリンクラー",
+    "watering_duration": 12.0,
+    "weed_status": "なし",
+    "disease_status": "なし",
+    "pest_status": "なし",
+    "other_notes": "",
+    "timestamp": "2025-08-26T11:11:36.704634"
+  }
+]
